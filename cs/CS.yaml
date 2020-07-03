@@ -1,0 +1,46 @@
+openapi: 3.0.0
+info:
+  title: Модуль CheckStatus
+  description: Модуль проверки статуса абонента
+  version: 1.0.0
+paths:
+  /check:
+    get:
+      summary: Возвращает статус абонента
+      parameters:
+        - in: query
+          name: msisdn
+          schema:
+            $ref: '#/components/schemas/Msisdn'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        '400':
+          description: Абонент не найден
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msisdn:
+                    $ref: '#/components/schemas/Msisdn'
+
+components:
+  schemas:
+    StatusResponse:
+      properties:
+        status:
+          type: boolean
+          description: Абонент активен
+        account:
+          type: string
+          description: Уникальный идентификатор ЛС абонента
+    Msisdn:
+      type: string
+      pattern: '^\d{11,15}$'
+      description: Номер абонента. В соответствии с E.164, может достигать 15 знаков, содержит только цифры. Должен включать код страны (CC).
+      example: 3809130125566

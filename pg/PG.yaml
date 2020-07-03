@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  title: Модуль PaymentGate
+  description: Модуль приема запросов на платеж
+  version: 1.0.0
+paths:
+  /payment:
+    post:
+      summary: Запрос на проведение платежа
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+           description: Абонент не найден
+           content:
+             application/json:
+               schema:
+                 type: object
+                 properties:
+                   msisnd:
+                     type: string
+                     description: Запрошенный msisdn
+        '500':
+           description: Ошибка проведения платежа
+           content:
+             application/json:
+               schema:
+                 $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    PaymentRequest:
+      properties:
+        msisdn:
+          $ref: '../cs/CS.yaml#/components/schemas/Msisdn'
+        date:
+          type: string
+          format: date-time
+        sum:
+          type: number
+          format: double
+          minimum: 1
+        operation:
+          type: string
+          description: Идентификатор операции внешней системы
+      required:
+        - msisdn
+        - date
+        - sum
+        - operation
+    SuccessResponse:
+      properties:
+        operation:
+          type: string
+          description: Идентификатор операции внешней системы
+        #Согласно ТЗ, мы должны возвращать сторонним системам баланс абонента. Похоже на нарушение конфиденциальности.
+        balance:
+          type: number
+          format: double
+          description: Баланс абонента после проведения платежа
+      required:
+        - operation
+        - balance
+    ErrorResponse:
+      properties:
+        code:
+          type: string
+          enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        message:
+          type: string
+      required:
+        - code
+        - message
