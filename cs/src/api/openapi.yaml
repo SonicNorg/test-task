@@ -1,0 +1,61 @@
+openapi: 3.0.0
+info:
+  description: Модуль проверки статуса абонента
+  title: Модуль CheckStatus
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /check:
+    get:
+      operationId: checkGET
+      parameters:
+      - explode: true
+        in: query
+        name: msisdn
+        required: false
+        schema:
+          $ref: '#/components/schemas/Msisdn'
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+          description: Абонент не найден
+      summary: Возвращает статус абонента
+      x-eov-operation-handler: controllers/DefaultController
+components:
+  schemas:
+    StatusResponse:
+      example:
+        account: account
+        status: true
+      properties:
+        status:
+          description: Абонент активен
+          type: boolean
+        account:
+          description: Уникальный идентификатор ЛС абонента
+          type: string
+    Msisdn:
+      description: Номер абонента. В соответствии с E.164, может достигать 15 знаков,
+        содержит только цифры. Должен включать код страны (CC).
+      example: "3809130125566"
+      pattern: ^\d{11,15}$
+      type: string
+    inline_response_400:
+      properties:
+        msisdn:
+          description: Номер абонента. В соответствии с E.164, может достигать 15
+            знаков, содержит только цифры. Должен включать код страны (CC).
+          example: "3809130125566"
+          pattern: ^\d{11,15}$
+          type: string
