@@ -36,15 +36,15 @@ async function insertPayment(paymentRequest) {
 
     const payment = {
         payment_date: paymentRequest.date,
-        transaction_amount: paymentRequest.sum,
+        transaction_amount: parseFloat(paymentRequest.sum) * 100,
         external_operation_id: paymentRequest.operation,
         personal_account_id: customerId,
         success: 1
     };
     console.log(payment);
-    const paymentId = await Repository.create(payment);
-    //TODO const balance = Repository.getBalance
-    return {operation: paymentId, balance: -1}
+    const paymentId = await Repository.createPayment(payment);
+    const balance = await Repository.getBalance(customerId);
+    return {operation: paymentId, balance: balance / 100}
 }
 
 function checkStatus(msisdn) {

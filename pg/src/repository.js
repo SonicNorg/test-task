@@ -20,7 +20,7 @@ const insertPaymentQuery =
   ) returning PAYMENT_ID
   INTO :payment_id`;
 
-async function create(payment) {
+async function createPayment(payment) {
     const newPayment = Object.assign({}, payment);
 
     newPayment.PAYMENT_ID = {
@@ -34,31 +34,22 @@ async function create(payment) {
     return result.outBinds.PAYMENT_ID[0];
 }
 
-module.exports.create = create;
+module.exports.createPayment = createPayment;
 
-const updateSql =
-    `update employees
-  set first_name = :first_name,
-    last_name = :last_name,
-    email = :email,
-    phone_number = :phone_number,
-    hire_date = :hire_date,
-    job_id = :job_id,
-    salary = :salary,
-    commission_pct = :commission_pct,
-    manager_id = :manager_id,
-    department_id = :department_id
-  where employee_id = :employee_id`;
+const selectBalanceQuery =
+    `SELECT BALANCE FROM BALANCE
+    where PERSONAL_ACCOUNT_ID = :personal_account_id`;
 
-async function update(emp) {
-    const employee = Object.assign({}, emp);
-    const result = await database.execute(updateSql, employee);
+async function getBalance(personal_account_id) {
+    const filter = {personal_account_id: personal_account_id};
+    const result = await database.execute(selectBalanceQuery, filter);
 
-    if (result.rowsAffected && result.rowsAffected === 1) {
-        return employee;
+    console.log(`BALANCE: ${JSON.stringify(result)}`);
+    if (result.rows) {
+        return parseInt(result.rows[0].BALANCE);
     } else {
         return null;
     }
 }
 
-module.exports.update = update;
+module.exports.getBalance = getBalance;

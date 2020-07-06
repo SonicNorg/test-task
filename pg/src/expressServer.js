@@ -35,7 +35,7 @@ class ExpressServer {
     app.use(morgan('combined'));
     app.use(helmet());
 
-    this.app.use(bodyParser.json({ limit: '14MB' }));
+    this.app.use(bodyParser.json({ limit: '1MB' }));
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(cookieParser());
