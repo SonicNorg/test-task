@@ -13,7 +13,6 @@ const request = require('request-promise');
 const paymentPOST = (paymentRequest) => new Promise(
     async (resolve, reject) => {
         try {
-            console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAA')
             const response = await insertPayment(paymentRequest.body);
 
             resolve(Service.successResponse({
@@ -33,22 +32,23 @@ module.exports = {
 };
 
 async function insertPayment(paymentRequest) {
-    const customerId = await checkStatus(paymentRequest.msisdn);
-
+    const customer = await checkStatus(paymentRequest.msisdn);
+    console.debug("Customer found: " + JSON.stringify(customer))
+    //TODO if (!customer.active) && В КОНФИГЕ РАЗРЕШЕНО ДЛЯ НЕАКТИВНЫХ ИЛИ активный и РАЗРЕШЕНО ДЛЯ АКТИВНЫХ тогда
     const payment = {
         payment_date: paymentRequest.date,
         transaction_amount: parseFloat(paymentRequest.sum) * 100,
         external_operation_id: paymentRequest.operation,
-        personal_account_id: customerId,
+        personal_account_id: customer.account,
         success: 1
     };
     console.log(payment);
     const paymentId = await Repository.createPayment(payment);
-    const balance = await Repository.getBalance(customerId);
+    const balance = await Repository.getBalance(customer.account);
     return {operation: paymentId, balance: balance / 100}
 }
 
-function checkStatus(msisdn) {
+async function checkStatus(msisdn) {
     console.info(`CHECKING STATUS for msisdn = ${msisdn}`)
     const options = {
         method: 'GET',
@@ -62,11 +62,10 @@ function checkStatus(msisdn) {
         json: true
     };
 console.log(JSON.stringify(options));
-    let status = request(options)
+    const req = await request(options)
         .then(data => {
-            console.log(JSON.stringify(data));
-            status = data;
+            return data;
         });
-    console.log(JSON.stringify(status));
-    return status;
+    console.log("REQ = " + req)
+    return Promise.resolve(req);
 }

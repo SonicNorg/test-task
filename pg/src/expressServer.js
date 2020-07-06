@@ -32,9 +32,6 @@ class ExpressServer {
     // this.setupAllowedMedia();
     this.app.use(cors());
 
-    app.use(morgan('combined'));
-    app.use(helmet());
-
     this.app.use(bodyParser.json({ limit: '1MB' }));
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
