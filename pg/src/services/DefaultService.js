@@ -13,6 +13,7 @@ const request = require('request-promise');
 const paymentPOST = (paymentRequest) => new Promise(
     async (resolve, reject) => {
         try {
+            console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAA')
             const response = await insertPayment(paymentRequest.body);
 
             resolve(Service.successResponse({
@@ -32,7 +33,7 @@ module.exports = {
 };
 
 async function insertPayment(paymentRequest) {
-    const customerId = 1; //TODO service CS /check
+    const customerId = await checkStatus(paymentRequest.msisdn);
 
     const payment = {
         payment_date: paymentRequest.date,
@@ -48,6 +49,7 @@ async function insertPayment(paymentRequest) {
 }
 
 function checkStatus(msisdn) {
+    console.info(`CHECKING STATUS for msisdn = ${msisdn}`)
     const options = {
         method: 'GET',
         uri: `${configCS.URL_PATH}:${configCS.URL_PORT}/check`,
@@ -55,18 +57,16 @@ function checkStatus(msisdn) {
             'User-Agent': 'Request-Promise',
         },
         qs: {
-            msisdn: `${paymentRequest.msisdn}`
+            msisdn: msisdn
         },
         json: true
     };
-
-    let status;
-
-    request(options)
+console.log(JSON.stringify(options));
+    let status = request(options)
         .then(data => {
             console.log(JSON.stringify(data));
             status = data;
         });
-
+    console.log(JSON.stringify(status));
     return status;
 }

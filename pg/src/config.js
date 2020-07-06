@@ -24,7 +24,7 @@ module.exports.dbConfig = {
 };
 
 const configCS = {
-    URL_PORT: 3000,
+    URL_PORT: 3001,
     URL_PATH: 'http://localhost',
 };
 
