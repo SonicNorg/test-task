@@ -1,0 +1,61 @@
+{
+	"info": {
+		"_postman_id": "a8865c39-435c-4867-8300-724ec24a8e19",
+		"name": "test-task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:3000/payment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"msisdn\": \"123123123123\",\r\n    \"date\": \"2020-07-03T17:35:00Z\",\r\n    \"sum\": 511.75,\r\n    \"operation\": \"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/payment",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"payment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/check?msisdn=123123123123",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/check?msisdn=123123123123",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"check"
+					],
+					"query": [
+						{
+							"key": "msisdn",
+							"value": "123123123123"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
