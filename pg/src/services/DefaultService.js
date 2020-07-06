@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 const Service = require('./Service');
 const Repository = require('../repository');
+const configCS = require('../config').configCS;
+const request = require('request-promise');
 
 /**
  * Запрос на проведение платежа
@@ -11,7 +13,7 @@ const Repository = require('../repository');
 const paymentPOST = (paymentRequest) => new Promise(
     async (resolve, reject) => {
         try {
-            const response = await insertPayment(paymentRequest.body)
+            const response = await insertPayment(paymentRequest.body);
 
             resolve(Service.successResponse({
                 ...response,
@@ -31,6 +33,7 @@ module.exports = {
 
 async function insertPayment(paymentRequest) {
     const customerId = 1; //TODO service CS /check
+
     const payment = {
         payment_date: paymentRequest.date,
         transaction_amount: paymentRequest.sum,
@@ -38,8 +41,32 @@ async function insertPayment(paymentRequest) {
         personal_account_id: customerId,
         success: 1
     };
-    console.log(payment)
+    console.log(payment);
     const paymentId = await Repository.create(payment);
     //TODO const balance = Repository.getBalance
     return {operation: paymentId, balance: -1}
+}
+
+function checkStatus(msisdn) {
+    const options = {
+        method: 'GET',
+        uri: `${configCS.URL_PATH}:${configCS.URL_PORT}/check`,
+        headers: {
+            'User-Agent': 'Request-Promise',
+        },
+        qs: {
+            msisdn: `${paymentRequest.msisdn}`
+        },
+        json: true
+    };
+
+    let status;
+
+    request(options)
+        .then(data => {
+            console.log(JSON.stringify(data));
+            status = data;
+        });
+
+    return status;
 }

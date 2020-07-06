@@ -22,3 +22,10 @@ module.exports.dbConfig = {
     poolMax: 10,
     poolIncrement: 0
 };
+
+const configCS = {
+    URL_PORT: 3000,
+    URL_PATH: 'http://localhost',
+};
+
+module.exports.configCS = configCS;

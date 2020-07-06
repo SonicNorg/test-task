@@ -12,6 +12,9 @@ const { OpenApiValidator } = require('express-openapi-validator');
 const logger = require('./logger');
 const config = require('./config');
 
+const morgan = require('morgan');
+const helmet = require('helmet');
+
 class ExpressServer {
   constructor(port, openApiYaml) {
     this.port = port;
@@ -28,6 +31,10 @@ class ExpressServer {
   setupMiddleware() {
     // this.setupAllowedMedia();
     this.app.use(cors());
+
+    app.use(morgan('combined'));
+    app.use(helmet());
+
     this.app.use(bodyParser.json({ limit: '14MB' }));
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
