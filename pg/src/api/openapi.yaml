@@ -1,0 +1,114 @@
+openapi: 3.0.0
+info:
+  description: Модуль приема запросов на платеж
+  title: Модуль PaymentGate
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /payment:
+    post:
+      operationId: paymentPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+          description: Абонент не найден
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Ошибка проведения платежа
+      summary: Запрос на проведение платежа
+      x-eov-operation-handler: controllers/DefaultController
+components:
+  schemas:
+    PaymentRequest:
+      example:
+        date: 2000-01-23T04:56:07.000+00:00
+        sum: 1.0800828190461012
+        msisdn: "3809130125566"
+        operation: operation
+      properties:
+        msisdn:
+          description: Номер абонента. В соответствии с E.164, может достигать 15
+            знаков, содержит только цифры. Должен включать код страны (CC).
+          example: "3809130125566"
+          pattern: ^\d{11,15}$
+          type: string
+        date:
+          format: date-time
+          type: string
+        sum:
+          format: double
+          minimum: 1
+          type: number
+        operation:
+          description: Идентификатор операции внешней системы
+          type: string
+      required:
+      - date
+      - msisdn
+      - operation
+      - sum
+    SuccessResponse:
+      example:
+        balance: 0.8008281904610115
+        operation: operation
+      properties:
+        operation:
+          description: Идентификатор операции внешней системы
+          type: string
+        balance:
+          description: Баланс абонента после проведения платежа
+          format: double
+          type: number
+      required:
+      - balance
+      - operation
+    ErrorResponse:
+      properties:
+        code:
+          enum:
+          - "1"
+          - "2"
+          - "3"
+          - "4"
+          - "5"
+          - "6"
+          - "7"
+          - "8"
+          - "9"
+          - "10"
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - message
+    Msisdn:
+      description: Номер абонента. В соответствии с E.164, может достигать 15 знаков,
+        содержит только цифры. Должен включать код страны (CC).
+      example: "3809130125566"
+      pattern: ^\d{11,15}$
+      type: string
+    inline_response_400:
+      properties:
+        msisnd:
+          description: Запрошенный msisdn
+          type: string
