@@ -9,10 +9,10 @@
 const Controller = require('./Controller');
 const service = require('../services/DefaultService');
 const paymentPOST = async (request, response) => {
-  await Controller.handleRequest(request, response, service.paymentPOST);
+    await Controller.handleRequest(request, response, service.paymentPOST);
 };
 
 
 module.exports = {
-  paymentPOST,
+    paymentPOST,
 };

@@ -2,10 +2,10 @@ const oracledb = require('oracledb');
 const database = require('./services/database');
 
 const selectPaymentsQuery =
-    `select * from PAYMENT`;
+        `select * from PAYMENT`;
 
 const insertPaymentQuery =
-    `INSERT INTO PAYMENT (
+        `INSERT INTO PAYMENT (
     PAYMENT_DATE,
     EXTERNAL_OPERATION_ID,
     PERSONAL_ACCOUNT_ID,
@@ -29,7 +29,7 @@ async function createPayment(payment) {
     };
 
     const result = await database.execute(insertPaymentQuery, newPayment);
-    console.log(JSON.stringify(result))
+    console.log(JSON.stringify(result));
 
     return result.outBinds.PAYMENT_ID[0];
 }
@@ -37,7 +37,7 @@ async function createPayment(payment) {
 module.exports.createPayment = createPayment;
 
 const selectBalanceQuery =
-    `SELECT BALANCE FROM BALANCE
+        `SELECT BALANCE FROM BALANCE
     where PERSONAL_ACCOUNT_ID = :personal_account_id`;
 
 async function getBalance(personal_account_id) {

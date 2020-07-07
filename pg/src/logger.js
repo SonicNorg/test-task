@@ -1,7 +1,8 @@
 const { transports, createLogger, format } = require('winston');
+const loggerLevel = require('./config').loggerLevel;
 
 const logger = createLogger({
-  level: 'info',
+  level: loggerLevel,
   format: format.combine(
     format.timestamp(),
     format.json(),

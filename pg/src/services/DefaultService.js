@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 const Service = require('./Service');
 const Repository = require('../repository');
-const configCS = require('../config').configCS;
+const csConfig = require('../config').csConfig;
 const request = require('request-promise');
 
 /**
@@ -49,10 +49,10 @@ async function insertPayment(paymentRequest) {
 }
 
 async function checkStatus(msisdn) {
-    console.info(`CHECKING STATUS for msisdn = ${msisdn}`)
+    console.info(`CHECKING STATUS for msisdn = ${msisdn}`);
     const options = {
         method: 'GET',
-        uri: `${configCS.URL_PATH}:${configCS.URL_PORT}/check`,
+        uri: `${csConfig.CS_URL_PATH}:${csConfig.CS_URL_PORT}/check`,
         headers: {
             'User-Agent': 'Request-Promise',
         },
@@ -61,11 +61,15 @@ async function checkStatus(msisdn) {
         },
         json: true
     };
-console.log(JSON.stringify(options));
-    const req = await request(options)
-        .then(data => {
-            return data;
-        });
-    console.log("REQ = " + req)
-    return Promise.resolve(req);
+    console.log(JSON.stringify(options));
+    try {
+        const response = await request(options);
+        return Promise.resolve(response);
+        // .then(data => {
+        //     return data;
+        // });
+        // console.log("REQ = " + req);
+    } catch (err) {
+        return Promise.reject(err);
+    }
 }

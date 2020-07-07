@@ -22,14 +22,12 @@ function execute(statement, binds = [], opts = {}) {
 
         try {
             conn = await oracledb.getConnection();
-
             const result = await conn.execute(statement, binds, opts);
-
             resolve(result);
         } catch (err) {
             reject(err);
         } finally {
-            if (conn) { // conn assignment worked, need to close
+            if (conn) {
                 try {
                     await conn.close();
                 } catch (err) {

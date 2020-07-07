@@ -1,4 +1,5 @@
 const path = require('path');
+const envConfig = require('./config');
 
 const config = {
     ROOT_DIR: __dirname,
@@ -14,18 +15,6 @@ config.FILE_UPLOAD_PATH = path.join(config.PROJECT_DIR, 'uploaded_files');
 
 module.exports = config;
 
-module.exports.dbConfig = {
-    user: process.env.HR_USER || 'CS_TEST',
-    password: process.env.HR_PASSWORD || '1qaz2wsx',
-    connectString: process.env.HR_CONNECTIONSTRING || 'pttb.ru:1521/osadb.oracle.com',
-    poolMin: 10,
-    poolMax: 10,
-    poolIncrement: 0
-};
-
-const configCS = {
-    URL_PORT: 3001,
-    URL_PATH: 'http://localhost',
-};
-
-module.exports.configCS = configCS;
+module.exports.dbConfig = envConfig.dbConfig;
+module.exports.csConfig = envConfig.csConfig;
+module.exports.loggerLevel = envConfig.loggerLevel;
