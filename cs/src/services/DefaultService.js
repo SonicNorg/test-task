@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 const Service = require('./Service');
 const Repository = require('../repository');
 const logger = require('../logger');
@@ -25,7 +24,7 @@ const checkGET = (msisdn) => new Promise(
                 ...{account: customer.PERSONAL_ACCOUNT_ID, status: customer.ACTIVE !== 0},
             }));
         } catch (e) {
-            logger.error(e)
+            logger.error(e);
             reject(Service.rejectResponse(
                 e.message || 'Invalid input',
                 e.status || 405,

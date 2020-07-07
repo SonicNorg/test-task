@@ -2,6 +2,7 @@ Dockerfile
 .dockerignore
 *.
 
+logs
 node_modules
 .openapi-generator
 npm-debug.log

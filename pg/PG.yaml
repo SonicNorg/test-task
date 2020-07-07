@@ -22,14 +22,6 @@ paths:
                 $ref: '#/components/schemas/SuccessResponse'
         '400':
            description: Абонент не найден
-           content:
-             application/json:
-               schema:
-                 type: object
-                 properties:
-                   msisnd:
-                     type: string
-                     description: Запрошенный msisdn
         '500':
            description: Ошибка проведения платежа
            content:
