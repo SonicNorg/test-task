@@ -1,34 +1,34 @@
-FROM oraclelinux:7-slim
+FROM flexhamp/test-task:latest
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN yum update -y && \
-  yum install -y oracle-release-el7 && \
-  yum install -y oracle-nodejs-release-el7 && \
-  yum install -y nodejs && \
-  yum install -y oracle-instantclient19.3-basic.x86_64 && \
-  yum clean all && \
-  node --version && \
-  npm --version && \
+RUN ls -la && \
   npm install && \
+  ls -la && \
   echo Installed
 
 COPY . .
 
 ENV NODE_ENV=production
 
+RUN ls -la && \
+    echo $NODE_ENV
+
 ARG ORACLEDB_USER
 ARG ORACLEDB_PASSWORD
 ARG ORACLEDB_CONNECTIONSTRING
 ARG ORACLEDB_POOL_MIN
 ARG ORACLEDB_POOL_INCREMENT
-
 ARG CS_URL_PORT
 ARG CS_URL_PATH
 
 ARG LOGGER_LEVEL
+
+ARG ACTIVE_CUSTOMER_PAYPAYMENT
+ARG INACTIVE_CUSTOMER_PAYPAYMENT
+
 
 ENV ORACLEDB_USER=${ORACLEDB_USER}
 ENV ORACLEDB_PASSWORD=${ORACLEDB_PASSWORD}
@@ -40,6 +40,9 @@ ENV CS_URL_PORT=${CS_URL_PORT}
 ENV CS_URL_PATH=${CS_URL_PATH}
 
 ENV LOGGER_LEVEL=${LOGGER_LEVEL}
+
+ENV ACTIVE_CUSTOMER_PAYPAYMENT=${ACTIVE_CUSTOMER_PAYPAYMENT}
+ENV INACTIVE_CUSTOMER_PAYPAYMENT=${INACTIVE_CUSTOMER_PAYPAYMENT}
 
 EXPOSE 3000
 

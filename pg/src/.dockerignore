@@ -1,8 +1,11 @@
-.openapi-generator
-api
+Dockerfile
+.dockerignore
+*.
 
 node_modules
+.openapi-generator
 npm-debug.log
-.openapi-generator-ignore
-*.log
-*.md
+
+**/.openapi-generator-ignore
+**/*.log
+**/*.md

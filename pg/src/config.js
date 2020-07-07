@@ -15,6 +15,8 @@ config.FILE_UPLOAD_PATH = path.join(config.PROJECT_DIR, 'uploaded_files');
 
 module.exports = config;
 
+//Dynamic Configuration
+module.exports.appConfig = envConfig.appConfig;
 module.exports.dbConfig = envConfig.dbConfig;
 module.exports.csConfig = envConfig.csConfig;
 module.exports.loggerLevel = envConfig.loggerLevel;

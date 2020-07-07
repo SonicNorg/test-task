@@ -13,3 +13,8 @@ module.exports.csConfig = {
 };
 
 module.exports.loggerLevel = process.env.LOGGER_LEVEL || 'debug';
+
+module.exports.appConfig = {
+    ACTIVE_CUSTOMER_PAYMENT_ALLOWED: true,
+    INACTIVE_CUSTOMER_PAYMENT_ALLOWED: false
+};
