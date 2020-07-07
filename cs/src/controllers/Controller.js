@@ -28,60 +28,6 @@ class Controller {
     }
   }
 
-  /**
-   * Files have been uploaded to the directory defined by config.js as upload directory
-   * Files have a temporary name, that was saved as 'filename' of the file object that is
-   * referenced in reuquest.files array.
-   * This method finds the file and changes it to the file name that was originally called
-   * when it was uploaded. To prevent files from being overwritten, a timestamp is added between
-   * the filename and its extension
-   * @param request
-   * @param fieldName
-   * @returns {string}
-   */
-  static collectFile(request, fieldName) {
-    let uploadedFileName = '';
-    if (request.files && request.files.length > 0) {
-      const fileObject = request.files.find(file => file.fieldname === fieldName);
-      if (fileObject) {
-        const fileArray = fileObject.originalname.split('.');
-        const extension = fileArray.pop();
-        fileArray.push(`_${Date.now()}`);
-        uploadedFileName = `${fileArray.join('')}.${extension}`;
-        fs.renameSync(path.join(config.FILE_UPLOAD_PATH, fileObject.filename),
-          path.join(config.FILE_UPLOAD_PATH, uploadedFileName));
-      }
-    }
-    return uploadedFileName;
-  }
-
-  // static collectFiles(request) {
-  //   logger.info('Checking if files are expected in schema');
-  //   const requestFiles = {};
-  //   if (request.openapi.schema.requestBody !== undefined) {
-  //     const [contentType] = request.headers['content-type'].split(';');
-  //     if (contentType === 'multipart/form-data') {
-  //       const contentSchema = request.openapi.schema.requestBody.content[contentType].schema;
-  //       Object.entries(contentSchema.properties).forEach(([name, property]) => {
-  //         if (property.type === 'string' && ['binary', 'base64'].indexOf(property.format) > -1) {
-  //           const fileObject = request.files.find(file => file.fieldname === name);
-  //           const fileArray = fileObject.originalname.split('.');
-  //           const extension = fileArray.pop();
-  //           fileArray.push(`_${Date.now()}`);
-  //           const uploadedFileName = `${fileArray.join('')}.${extension}`;
-  //           fs.renameSync(path.join(config.FILE_UPLOAD_PATH, fileObject.filename),
-  //             path.join(config.FILE_UPLOAD_PATH, uploadedFileName));
-  //           requestFiles[name] = uploadedFileName;
-  //         }
-  //       });
-  //     } else if (request.openapi.schema.requestBody.content[contentType] !== undefined
-  //         && request.files !== undefined) {
-  //       [request.body] = request.files;
-  //     }
-  //   }
-  //   return requestFiles;
-  // }
-
   static collectRequestParams(request) {
     const requestParams = {};
     if (request.openapi.schema.requestBody !== undefined) {

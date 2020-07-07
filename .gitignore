@@ -2,3 +2,5 @@
 **/node_modules
 *.log
 */*.log
+*/.nyc_output
+.nyc_output
