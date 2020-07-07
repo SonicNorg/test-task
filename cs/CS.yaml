@@ -21,13 +21,6 @@ paths:
                 $ref: '#/components/schemas/StatusResponse'
         '400':
           description: Абонент не найден
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  msisdn:
-                    $ref: '#/components/schemas/Msisdn'
 
 components:
   schemas:

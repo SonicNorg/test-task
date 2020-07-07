@@ -6,7 +6,8 @@
   "scripts": {
     "prestart": "npm install",
     "start": "node index.js",
-    "dev": "nodemon index"
+    "dev": "nodemon index",
+    "test": "nyc --reporter=text --reporter=html mocha --timeout 25000 --unhandled-rejections=strict --exit"
   },
   "keywords": [
     "checkstatus"
@@ -33,11 +34,13 @@
     "axios": "^0.19.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
+    "chai-http": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.17.2",
     "mocha": "^7.1.1",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "nyc": "^15.1.0"
   },
   "eslintConfig": {
     "env": {
