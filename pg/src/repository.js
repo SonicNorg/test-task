@@ -1,8 +1,6 @@
 const oracledb = require('oracledb');
 const database = require('./services/database');
-
-const selectPaymentsQuery =
-        `select * from PAYMENT`;
+const logger = require('./logger');
 
 const insertPaymentQuery =
         `INSERT INTO PAYMENT (
@@ -28,8 +26,8 @@ async function createPayment(payment) {
         type: oracledb.RAW
     };
 
+    logger.debug("Creating new payment: ", JSON.stringify(newPayment));
     const result = await database.execute(insertPaymentQuery, newPayment);
-    console.log(JSON.stringify(result));
 
     return result.outBinds.PAYMENT_ID[0];
 }
@@ -42,9 +40,9 @@ const selectBalanceQuery =
 
 async function getBalance(personal_account_id) {
     const filter = {personal_account_id: personal_account_id};
-    const result = await database.execute(selectBalanceQuery, filter);
+    logger.debug(`Getting customer balance by PERSONAL_ACCOUNT_ID: ${personal_account_id}`);
 
-    console.log(`BALANCE: ${JSON.stringify(result)}`);
+    const result = await database.execute(selectBalanceQuery, filter);
     if (result.rows) {
         return parseInt(result.rows[0].BALANCE);
     } else {

@@ -5,7 +5,7 @@ const database = require('./services/database');
 
 const launchServer = async () => {
     try {
-        console.log(`    
+        logger.info(`    
            _____ __             __  _                                  ___            __  _           
           / ___// /_____ ______/ /_(_)___  ____ _   ____ _____  ____  / (_)________ _/ /_(_)___  ____ 
           \\__ \\/ __/ __ \`/ ___/ __/ / __ \\/ __ \`/  / __ \`/ __ \\/ __ \\/ / / ___/ __ \`/ __/ / __ \\/ __ \\
@@ -15,10 +15,10 @@ const launchServer = async () => {
         `);
 
         try {
-            console.log('Initializing database module');
+            logger.info('Initializing database module');
             await database.initialize();
         } catch (err) {
-            console.error(err);
+            logger.error("Failed to initialize database", err);
             process.exit(1); // Non-zero failure code
         }
 
@@ -35,33 +35,32 @@ const launchServer = async () => {
 launchServer().catch(e => logger.error(e));
 
 process.on('SIGTERM', () => {
-    console.log('Received SIGTERM');
+    logger.info('Received SIGTERM');
     shutdown();
 });
 
 process.on('SIGINT', () => {
-    console.log('Received SIGINT');
+    logger.info('Received SIGINT');
     shutdown();
 });
 
 process.on('uncaughtException', err => {
-    console.log('Uncaught exception');
-    console.error(err);
+    logger.error('Uncaught exception', err);
     shutdown(err);
 });
 
 async function shutdown(e) {
     let err = e;
-    console.log('Shutting down');
+    logger.info('Shutting down');
     try {
-        console.log('Closing database module');
+        logger.info('Closing database module');
         await database.close();
     } catch (err) {
-        console.log('Encountered error', err);
+        logger.error('Encountered error', err);
         err = err || e;
     }
 
-    console.log('Exiting process');
+    logger.debug('Exiting process');
 
     if (err) {
         process.exit(1); // Non-zero failure code

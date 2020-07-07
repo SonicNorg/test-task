@@ -54,7 +54,7 @@ class ExpressServer {
       operationHandlers: path.join(__dirname),
       fileUploader: { dest: config.FILE_UPLOAD_PATH },
     }).install(this.app)
-      .catch(e => console.log(e))
+      .catch(e => logger.error(e))
       .then(() => {
         // eslint-disable-next-line no-unused-vars
         this.app.use((err, req, res, next) => {
@@ -66,7 +66,7 @@ class ExpressServer {
         });
 
         http.createServer(this.app).listen(this.port);
-        console.log(`Listening on port ${this.port}`);
+        logger.info(`Listening on port ${this.port}`);
       });
   }
 
@@ -74,7 +74,7 @@ class ExpressServer {
   async close() {
     if (this.server !== undefined) {
       await this.server.close();
-      console.log(`Server on port ${this.port} shut down`);
+      logger.info(`Server on port ${this.port} shut down`);
     }
   }
 }

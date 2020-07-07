@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 const Service = require('./Service');
 const Repository = require('../repository');
+const logger = require('../logger');
 
 /**
  * Возвращает статус абонента
@@ -11,13 +12,20 @@ const Repository = require('../repository');
 const checkGET = (msisdn) => new Promise(
     async (resolve, reject) => {
         try {
-            console.log(`MSISDN: ${JSON.stringify(msisdn)}`)
-            const customer = await Repository.getCustomer(msisdn.msisdn);
+            let customer = null;
+            try {
+                customer = await Repository.getCustomer(msisdn.msisdn);
+            } catch (e) {
+                throw {message: `Error while get customer by msisdn ${msisdn.msisdn}! ${e}`, status: 500};
+            }
+            if (customer == null) {
+                throw {message: `Customer with msisdn ${msisdn.msisdn} not found!`, status: 400};
+            }
             resolve(Service.successResponse({
                 ...{account: customer.PERSONAL_ACCOUNT_ID, status: customer.ACTIVE !== 0},
             }));
         } catch (e) {
-            console.error(e)
+            logger.error(e)
             reject(Service.rejectResponse(
                 e.message || 'Invalid input',
                 e.status || 405,

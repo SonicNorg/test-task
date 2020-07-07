@@ -3,6 +3,7 @@ const Service = require('./Service');
 const Repository = require('../repository');
 const csConfig = require('../config').csConfig;
 const request = require('request-promise');
+const logger = require('../logger');
 
 /**
  * Запрос на проведение платежа
@@ -33,7 +34,7 @@ module.exports = {
 
 async function insertPayment(paymentRequest) {
     const customer = await checkStatus(paymentRequest.msisdn);
-    console.debug("Customer found: " + JSON.stringify(customer))
+    logger.debug(`By msisdn ${paymentRequest.msisdn} found customer: ${JSON.stringify(customer)}`)
     //TODO if (!customer.active) && В КОНФИГЕ РАЗРЕШЕНО ДЛЯ НЕАКТИВНЫХ ИЛИ активный и РАЗРЕШЕНО ДЛЯ АКТИВНЫХ тогда
     const payment = {
         payment_date: paymentRequest.date,
@@ -42,33 +43,26 @@ async function insertPayment(paymentRequest) {
         personal_account_id: customer.account,
         success: 1
     };
-    console.log(payment);
     const paymentId = await Repository.createPayment(payment);
     const balance = await Repository.getBalance(customer.account);
     return {operation: paymentId, balance: balance / 100}
 }
 
 async function checkStatus(msisdn) {
-    console.info(`CHECKING STATUS for msisdn = ${msisdn}`);
+    logger.info(`Checking Status for msisdn = ${msisdn}`);
     const options = {
         method: 'GET',
         uri: `${csConfig.CS_URL_PATH}:${csConfig.CS_URL_PORT}/check`,
         headers: {
             'User-Agent': 'Request-Promise',
         },
-        qs: {
-            msisdn: msisdn
-        },
+        qs: {msisdn},
         json: true
     };
-    console.log(JSON.stringify(options));
+    logger.debug(`Sending CS request: ${JSON.stringify(options)}`);
     try {
         const response = await request(options);
         return Promise.resolve(response);
-        // .then(data => {
-        //     return data;
-        // });
-        // console.log("REQ = " + req);
     } catch (err) {
         return Promise.reject(err);
     }
