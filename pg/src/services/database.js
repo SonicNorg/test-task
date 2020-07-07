@@ -1,7 +1,9 @@
 const oracledb = require('oracledb');
 const dbConfig = require('../config').dbConfig;
+const LOGGER = require('../logger');
 
 async function initialize() {
+    LOGGER.debug(dbConfig);
     const pool = await oracledb.createPool(dbConfig);
 }
 
@@ -23,6 +25,9 @@ function execute(statement, binds = [], opts = {}) {
         try {
             conn = await oracledb.getConnection();
             const result = await conn.execute(statement, binds, opts);
+
+            LOGGER.debug(result);
+
             resolve(result);
         } catch (err) {
             reject(err);

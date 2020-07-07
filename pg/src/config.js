@@ -1,5 +1,5 @@
 const path = require('path');
-const envConfig = require('./config');
+const envConfig = require('./config/index');
 
 const config = {
     ROOT_DIR: __dirname,

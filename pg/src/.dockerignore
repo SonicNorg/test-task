@@ -1,3 +1,6 @@
+.openapi-generator
+api
+
 node_modules
 npm-debug.log
 .openapi-generator-ignore
