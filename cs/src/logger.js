@@ -6,7 +6,7 @@ const logger = createLogger({
     format.timestamp(),
     format.json(),
   ),
-  defaultMeta: { service: 'user-service' },
+  defaultMeta: { service: 'CheckStatus' },
   transports: [
     new transports.Console(),
     new transports.File({ filename: 'error.log', level: 'error', timestamp: true }),

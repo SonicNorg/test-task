@@ -19,8 +19,8 @@ class ExpressServer {
     this.openApiPath = openApiYaml;
     try {
       this.schema = jsYaml.safeLoad(fs.readFileSync(openApiYaml));
-    } catch (e) {
-      logger.error('failed to start Express Server', e.message);
+    } catch (err) {
+      logger.error('Failed to start Express Server', err);
     }
     this.setupMiddleware();
   }
