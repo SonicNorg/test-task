@@ -19,7 +19,7 @@ describe('/check', () => {
     after(async () => await launched.close().then(() => database.close()));
 
     it('Should return 400 if customer not found', (done) => {
-        let agent = chai.request(launched.app);
+        const agent = chai.request(launched.app);
         agent
             .get('/check?msisdn=3800000000001')
             .end((err, res) => {
@@ -30,7 +30,7 @@ describe('/check', () => {
     });
 
     it('Should return 200 with customer', (done) => {
-        let agent = chai.request(launched.app);
+        const agent = chai.request(launched.app);
         agent
             .get('/check?msisdn=3809180001122')
             .end((err, res) => {
