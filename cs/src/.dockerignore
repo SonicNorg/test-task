@@ -1,0 +1,11 @@
+Dockerfile
+.dockerignore
+*.
+
+node_modules
+.openapi-generator
+npm-debug.log
+
+**/.openapi-generator-ignore
+**/*.log
+**/*.md

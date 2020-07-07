@@ -7,14 +7,5 @@ module.exports.dbConfig = {
     poolIncrement: process.env.ORACLEDB_POOL_INCREMENT || 0
 };
 
-module.exports.csConfig = {
-    CS_URL_PORT: process.env.CS_URL_PORT,
-    CS_URL_PATH: process.env.CS_URL_PATH,
-};
-
 module.exports.loggerLevel = process.env.LOGGER_LEVEL || 'error';
 
-module.exports.appConfig = {
-    ACTIVE_CUSTOMER_PAYMENT_ALLOWED: process.env.ACTIVE_CUSTOMER_PAYMENT || true,
-    INACTIVE_CUSTOMER_PAYMENT_ALLOWED: process.env.INACTIVE_CUSTOMER_PAYMENT || false
-};
