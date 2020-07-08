@@ -9,7 +9,7 @@
 
 #### Сборка артефакта
 1. Склонировать репозиторий.
-2. Перейти в модель "cs"
+2. Перейти в модуль "pg"
 3. Заппустить сборку образа
 ```
 docker build --no-cache --force-rm=true -t <имя_образа> .
@@ -62,11 +62,11 @@ docker build --build-arg ORACLEDB_USER=<имя_пользователя_бд> --
 **FOR EXAMPLE:**
     
     docker run -d \
-    --name pg-container -it \
-    -e ORACLEDB_USER=USER_DB \
-    -e ORACLEDB_PASSWORD=PASSWORD_DB \
-    -e ORACLEDB_CONNECTIONSTRING=loclhost.ru:1521/osadb.oracle.com \
-    -e CS_URL_PORT=3001 \
-    -e CS_URL_PATH=http://lovalhost.ru \
-    -p 3000:3000 \
-    pg-images:latest
+        --name pg-container -it \
+        -e ORACLEDB_USER=USER_DB \
+        -e ORACLEDB_PASSWORD=PASSWORD_DB \
+        -e ORACLEDB_CONNECTIONSTRING=loclhost.ru:1521/osadb.oracle.com \
+        -e CS_URL_PORT=3001 \
+        -e CS_URL_PATH=http://lovalhost.ru \
+        -p 3000:3000 \
+        pg-images:latest

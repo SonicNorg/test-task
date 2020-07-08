@@ -10,7 +10,7 @@
 
 #### Сборка артефакта
 1. Склонировать репозиторий.
-2. Перейти в модель "cs"
+2. Перейти в модуль "cs"
 3. Заппустить сборку образа
 ```
 docker build --no-cache --force-rm=true -t <имя_образа> .
@@ -55,10 +55,10 @@ docker build --build-arg ORACLEDB_USER=<имя_пользователя_бд> --
 **FOR EXAMPLE:**
     
     docker run -d \
-    --name cs-container -it \
-    -e ORACLEDB_USER=USER_DB \
-    -e ORACLEDB_PASSWORD=PASSWORD_DB \
-    -e ORACLEDB_CONNECTIONSTRING=loclhost.ru:1521/osadb.oracle.com \
-    -p 3001:3000 \
-    cs-images:latest
+        --name cs-container -it \
+        -e ORACLEDB_USER=USER_DB \
+        -e ORACLEDB_PASSWORD=PASSWORD_DB \
+        -e ORACLEDB_CONNECTIONSTRING=loclhost.ru:1521/osadb.oracle.com \
+        -p 3001:3000 \
+        cs-images:latest
     
