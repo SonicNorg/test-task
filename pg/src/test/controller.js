@@ -8,7 +8,7 @@ const server = require('../expressServer');
 const database = require('../services/database');
 const launched = new server(config.URL_PORT, config.OPENAPI_YAML);
 const sinon = require('sinon');
-const pgService = require('../services/DefaultService');
+const DefaultService = require('../services/DefaultService');
 
 chai.use(chaiHttp);
 chai.should()
@@ -25,6 +25,12 @@ describe('/payment', () => {
 
     it('Should return 400 if customer not found', (done) => {
         const agent = chai.request(launched.app);
+        sinon.stub(DefaultService, 'checkStatus').callsFake(() => {
+            throw {
+                statusCode: 400,
+                error: `Customer with msisdn 79130135022 not found!`
+            };
+        });
         const pay = {
             msisdn: 79130135022,
             date: "2020-12-31T23:59:59Z",
@@ -43,12 +49,10 @@ describe('/payment', () => {
 
     it('Should return 200 with customer', (done) => {
         const agent = chai.request(launched.app);
-        sinon.stub(pgService, 'yourClassMethod').callsFake(() => {
-            return {
-                account: getCustomerAccountId(3809180001122),
-                status: true
-            }
-        })
+        sinon.stub(DefaultService, 'checkStatus').returns({
+            account: 1,
+            status: true
+        });
         const pay = {
             msisdn: 3809180001122,
             date: "2020-12-31T23:59:59Z",
@@ -61,22 +65,29 @@ describe('/payment', () => {
             .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
-                res.body.should.have.property('balance').eql('550.12')
+                res.body.should.have.property('balance').eql(550.12)
+                done();
+            });
+    });
+
+    it('Should return 500 if any not 400 error', (done) => {
+        const agent = chai.request(launched.app);
+        sinon.stub(DefaultService, 'checkStatus').callsFake(() => {
+            throw new Error("Something is wrong");
+        });
+        const pay = {
+            msisdn: 3809180001122,
+            date: "2020-12-31T23:59:59Z",
+            sum: 450.12,
+            operation: 2
+        }
+        agent
+            .post('/payment')
+            .send(pay)
+            .end((err, res) => {
+                res.should.have.status(500);
                 done();
             });
     });
 
 });
-
-const selectCustomerQuery =
-    `select PERSONAL_ACCOUNT_ID from CUSTOMER WHERE MSISDN = :msisdn`;
-
-function getCustomerAccountId(msisdn) {
-    const result = Promise.resolve(database.execute(selectCustomerQuery, {msisdn: parseInt(msisdn)}));
-
-    if (Array.isArray(result.rows) && result.rows.length) {
-        return result.rows[0].PERSONAL_ACCOUNT_ID;
-    } else {
-        return null;
-    }
-}

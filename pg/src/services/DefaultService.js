@@ -13,16 +13,11 @@ const logger = require('../logger');
  * */
 class DefaultService {
 
-    constructor() {
-        console.log("THIS: constructor SUKA", this);
-        this._this = "dsfgkjhasd";
-    }
-    paymentPOST(paymentRequest) {
-        console.log("THIS: EBANA", this._this)
+    static paymentPOST(paymentRequest) {
         return new Promise(
             async (resolve, reject) => {
                 try {
-                    const response = await _this.insertPayment(paymentRequest.body);
+                    const response = await DefaultService.insertPayment(paymentRequest.body);
 
                     resolve(Service.successResponse({
                         ...response,
@@ -37,19 +32,21 @@ class DefaultService {
         );
     }
 
-    async insertPayment(paymentRequest) {
+    static async insertPayment(paymentRequest) {
         let customer = null;
+        const message = `No customer found with msisdn ${paymentRequest.msisdn}`;
         try {
-            customer = await this.checkStatus(paymentRequest.msisdn);
+            customer = await DefaultService.checkStatus(paymentRequest.msisdn);
+            logger.debug("Customer status:", customer);
         } catch (e) {
-            //do nothing: customer is already null
+            logger.error(message);
+            if (e.statusCode == 400) {
+                throw {status: 400, message: message};
+            } else {
+                throw {status: 500, message: e.error ? e.error : "Unknown error in CS call"};
+            }
         }
         logger.debug(`By msisdn ${paymentRequest.msisdn} found customer: ${JSON.stringify(customer)}`)
-        if (customer == null) {
-            const message = `No customer found with msisdn ${paymentRequest.msisdn}`;
-            logger.error(message);
-            throw {status: 400, message: message};
-        }
         //TODO if (!customer.active) && В КОНФИГЕ РАЗРЕШЕНО ДЛЯ НЕАКТИВНЫХ ИЛИ активный и РАЗРЕШЕНО ДЛЯ АКТИВНЫХ тогда
         const payment = {
             payment_date: paymentRequest.date,
@@ -63,7 +60,7 @@ class DefaultService {
         return {operation: paymentId, balance: balance / 100}
     }
 
-    async checkStatus(msisdn) {
+    static async checkStatus(msisdn) {
         logger.info(`Checking Status for msisdn = ${msisdn}`);
         const options = {
             method: 'GET',
@@ -84,5 +81,4 @@ class DefaultService {
     }
 }
 
-const _defaultService = new DefaultService()
-module.exports = _defaultService
+module.exports = DefaultService
