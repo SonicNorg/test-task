@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.74% </span>
+                <span class="strong">84.62% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>33/43</span>
+                <span class='fraction'>33/39</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">62.5% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/10</span>
+                <span class='fraction'>5/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">78.57% </span>
+                <span class="strong">86.84% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>33/42</span>
+                <span class='fraction'>33/38</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -127,19 +127,7 @@
 <a name='L68'></a><a href='#L68'>68</a>
 <a name='L69'></a><a href='#L69'>69</a>
 <a name='L70'></a><a href='#L70'>70</a>
-<a name='L71'></a><a href='#L71'>71</a>
-<a name='L72'></a><a href='#L72'>72</a>
-<a name='L73'></a><a href='#L73'>73</a>
-<a name='L74'></a><a href='#L74'>74</a>
-<a name='L75'></a><a href='#L75'>75</a>
-<a name='L76'></a><a href='#L76'>76</a>
-<a name='L77'></a><a href='#L77'>77</a>
-<a name='L78'></a><a href='#L78'>78</a>
-<a name='L79'></a><a href='#L79'>79</a>
-<a name='L80'></a><a href='#L80'>80</a>
-<a name='L81'></a><a href='#L81'>81</a>
-<a name='L82'></a><a href='#L82'>82</a>
-<a name='L83'></a><a href='#L83'>83</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L71'></a><a href='#L71'>71</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -167,26 +155,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -212,7 +189,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -221,85 +197,73 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// const { Middleware } = require('swagger-express-middleware');
-const http = require('http');
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const swaggerUI = require('swagger-ui-express');
 const jsYaml = require('js-yaml');
 const express = require('express');
+const morgan = require('morgan');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const { OpenApiValidator } = require('express-openapi-validator');
+const {OpenApiValidator} = require('express-openapi-validator');
 const logger = require('./logger');
 const config = require('./config');
 &nbsp;
 class ExpressServer {
-  constructor(port, openApiYaml) {
-    this.port = port;
-    this.app = express();
-    this.openApiPath = openApiYaml;
-    try {
-      this.schema = jsYaml.safeLoad(fs.readFileSync(openApiYaml));
-    } catch (err) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Failed to start Express Server', err);</span>
+    constructor(port, openApiYaml) {
+        this.port = port;
+        this.app = express();
+        this.openApiPath = openApiYaml;
+        try {
+            this.schema = jsYaml.safeLoad(fs.readFileSync(openApiYaml));
+        } catch (err) {
+<span class="cstat-no" title="statement not covered" >            logger.error('Failed to start Express Server', err);</span>
+        }
+        this.setupMiddleware();
     }
-    this.setupMiddleware();
-  }
 &nbsp;
-  setupMiddleware() {
-    // this.setupAllowedMedia();
-    this.app.use(cors());
-    this.app.use(bodyParser.json({ limit: '1MB' }));
-    this.app.use(express.json());
-    this.app.use(express.urlencoded({ extended: false }));
-    this.app.use(cookieParser());
-    //Simple test to see that the server is up and responding
-    // this.app.get('/hello', (req, res) =&gt; res.send(`Hello World. path: ${this.openApiPath}`));
-    //Send the openapi document *AS GENERATED BY THE GENERATOR*
-    this.app.get('/openapi', <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; <span class="cstat-no" title="statement not covered" >res.sendFile((path.join(__dirname, 'api', 'openapi.yaml'))))</span>;
-    //View the openapi document in a visual interface. Should be able to test from this page
-    this.app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(this.schema));
-    this.app.get('/login-redirect', <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {
-<span class="cstat-no" title="statement not covered" >      res.status(200);</span>
-<span class="cstat-no" title="statement not covered" >      res.json(req.query);</span>
-    });
-    this.app.get('/oauth2-redirect.html', <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {
-<span class="cstat-no" title="statement not covered" >      res.status(200);</span>
-<span class="cstat-no" title="statement not covered" >      res.json(req.query);</span>
-    });
-  }
+    setupMiddleware() {
+        this.app.use(cors());
+        this.app.use(bodyParser.json({limit: '1MB'}));
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({extended: false}));
+        this.app.use(cookieParser());
+        this.app.use(morgan('combined', {stream: logger.stream}));
 &nbsp;
-  launch() {
-    new OpenApiValidator({
-      apiSpec: this.openApiPath,
-      operationHandlers: path.join(__dirname),
-      fileUploader: { dest: config.FILE_UPLOAD_PATH },
-    }).install(this.app)
-      .catch(<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >logger.error(e))</span>
-      .then(() =&gt; {
-        // eslint-disable-next-line no-unused-vars
-        this.app.use(<span class="fstat-no" title="function not covered" >(e</span>rr, req, res, next) =&gt; {
-          // format errors
-<span class="cstat-no" title="statement not covered" >          res.status(err.status || 500).json({</span>
-            message: err.message || err,
-            errors: err.errors || '',
-          });
-        });
-&nbsp;
-        http.createServer(this.app).listen(this.port);
-        logger.info(`Listening on port ${this.port}`);
-      });
-  }
-&nbsp;
-&nbsp;
-  async close() {
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.server !== undefined) {
-<span class="cstat-no" title="statement not covered" >      await this.server.close();</span>
-<span class="cstat-no" title="statement not covered" >      logger.info(`Server on port ${this.port} shut down`);</span>
+        this.app.get('/openapi', <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; <span class="cstat-no" title="statement not covered" >res.sendFile((path.join(__dirname, 'api', 'openapi.yaml'))))</span>;
+        this.app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(this.schema));
     }
-  }
+&nbsp;
+    launch() {
+        new OpenApiValidator({
+            apiSpec: this.openApiPath,
+            operationHandlers: path.join(__dirname),
+            fileUploader: {dest: config.FILE_UPLOAD_PATH},
+        }).install(this.app)
+            .catch(<span class="fstat-no" title="function not covered" >e </span>=&gt; <span class="cstat-no" title="statement not covered" >logger.error(e))</span>
+            .then(() =&gt; {
+                // eslint-disable-next-line no-unused-vars
+                this.app.use(<span class="fstat-no" title="function not covered" >(e</span>rr, req, res, next) =&gt; {
+                    // format errors
+<span class="cstat-no" title="statement not covered" >                    res.status(err.status || 500).json({</span>
+                        message: err.message || err,
+                        errors: err.errors || '',
+                    });
+                });
+&nbsp;
+                http.createServer(this.app).listen(this.port);
+                logger.info(`Listening on port ${this.port}`);
+            });
+    }
+&nbsp;
+    async close() {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (this.server !== undefined) {
+<span class="cstat-no" title="statement not covered" >            await this.server.close();</span>
+<span class="cstat-no" title="statement not covered" >            logger.info(`Server on port ${this.port} shut down`);</span>
+        }
+    }
 }
 &nbsp;
 module.exports = ExpressServer;
@@ -310,7 +274,7 @@ module.exports = ExpressServer;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Jul 07 2020 17:04:55 GMT+0300 (GMT+03:00)
+                at Wed Jul 08 2020 14:00:04 GMT+0300 (GMT+03:00)
             </div>
         </div>
         <script src="../prettify.js"></script>

@@ -10,8 +10,7 @@
     "test": "nyc --reporter=text --reporter=html mocha --timeout 25000 --unhandled-rejections=strict --exit"
   },
   "keywords": [
-    "openapi-generator",
-    "openapi"
+    "checkstatus"
   ],
   "license": "Unlicense",
   "private": true,

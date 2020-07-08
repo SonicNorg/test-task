@@ -42,10 +42,6 @@ function openApiRouter() {
         next();
         return;
       }
-      // request.swagger.paramValues = {};
-      // request.swagger.params.forEach((param) => {
-      //   request.swagger.paramValues[param.name] = getValueFromRequest(request, param);
-      // });
       const controllerName = request.openapi.schema['x-openapi-router-controller'];
       const serviceName = request.openapi.schema['x-openapi-router-service'];
       if (!controllers[controllerName] || controllers[controllerName] === undefined) {
