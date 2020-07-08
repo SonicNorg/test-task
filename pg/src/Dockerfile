@@ -21,6 +21,7 @@ RUN npm install && \
 COPY . .
 
 RUN npm run info && \
+    npm run migrate && \
     echo Installed
 
 ENV NODE_ENV=production

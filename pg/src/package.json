@@ -13,8 +13,7 @@
     "clean": "flyway -c config/_flywaydb/flyway.js clean"
   },
   "keywords": [
-    "openapi-generator",
-    "openapi"
+    "paymentgate"
   ],
   "license": "Unlicense",
   "private": true,
