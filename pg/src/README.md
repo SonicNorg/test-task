@@ -36,6 +36,7 @@ docker build --build-arg ORACLEDB_USER=<имя_пользователя_бд> --
         -e CS_URL_PORT=<порт_модуля_CS> \
         -e CS_URL_PATH=<url_модуля_CS> \
         -e LOGGER_LEVEL=<уровень_логирования> \
+        -v [<host mount point>:]/usr/src/app/logs \
         -p 3000:3000 \
         <имя_образа>
     
@@ -54,6 +55,7 @@ docker build --build-arg ORACLEDB_USER=<имя_пользователя_бд> --
             -e CS_URL_PATH                  URL модуля CS
             -e ACTIVE_CUSTOMER_PAYMENT      (default: true)
             -e INACTIVE_CUSTOMER_PAYMENT    (default: false)
+            -e LOGGER_LEVEL                 (default: error)
             -v /usr/src/app/logs            Путь к файлам логов
             
     P.S. RACLEDB_POOL_MIN и RACLEDB_POOL_MAX одинакове, и ORACLEDB_POOL_INCREMENT установлен в 0. 

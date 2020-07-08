@@ -33,6 +33,7 @@ docker build --build-arg ORACLEDB_USER=<имя_пользователя_бд> --
         -e ORACLEDB_POOL_MAX=<максимальный_пул> \
         -e ORACLEDB_POOL_INCREMENT=<пул_increment> \
         -e LOGGER_LEVEL=<уровень_логирования> \
+        -v [<host mount point>:]/usr/src/app/logs \
         -p 3000:3000 \
         <имя_образа>
         
@@ -47,6 +48,7 @@ docker build --build-arg ORACLEDB_USER=<имя_пользователя_бд> --
             -e ORACLEDB_POOL_MIN            (default: 10)
             -e ORACLEDB_POOL_MAX            (default: 10)
             -e ORACLEDB_POOL_INCREMENT      (default: 0)
+            -e LOGGER_LEVEL                 (default: error)
             -v /usr/src/app/logs            Путь к файлам логов
                     
          P.S. RACLEDB_POOL_MIN и RACLEDB_POOL_MAX одинакове, и ORACLEDB_POOL_INCREMENT установлен в 0. 
