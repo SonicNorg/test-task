@@ -21,7 +21,6 @@ class Controller {
 
     static sendError(response, error) {
         response.status(error.code || 500);
-        console.log(">>> ERROR", error)
         if (error.error instanceof Object) {
             response.json(error.error);
         } else {
@@ -98,7 +97,6 @@ class Controller {
             const serviceResponse = await serviceOperation(this.collectRequestParams(request));
             Controller.sendResponse(response, serviceResponse);
         } catch (error) {
-            console.log("@#$%@#$@#$@$ HANDLE ", error)
             Controller.sendError(response, error);
         }
     }
