@@ -59,7 +59,7 @@ async function checkStatus(msisdn) {
         qs: {msisdn},
         json: true
     };
-    logger.debug(`Sending CS request: ${JSON.stringify(options)}`);
+    logger.debug(`Sending CS request: ${options}`);
     try {
         const response = await request(options);
         return Promise.resolve(response);

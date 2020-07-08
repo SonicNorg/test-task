@@ -49,7 +49,7 @@ class ServiceMain {
             qs: {msisdn},
             json: true
         };
-        logger.debug(`Sending CS request: ${JSON.stringify(options)}`);
+        logger.debug(`Sending CS request: ${options}`);
         try {
             const response = await request(options);
             return Promise.resolve(response);
@@ -57,7 +57,6 @@ class ServiceMain {
             return Promise.reject(err);
         }
     }
-
 }
 
 const serviceMain = new ServiceMain();
