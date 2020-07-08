@@ -15,6 +15,7 @@
 docker build --no-cache --force-rm=true -t <имя_образа> .
 ```
 **NOTE** : Докер образ поддерживает создание переменных среды на этапе сборки
+
 **FOR EXAMPLE:**
 ```
 docker build --build-arg ORACLEDB_USER=<имя_пользователя_бд> --build-arg ORACLEDB_USER=<пароль_пользователя_бд> ...
