@@ -20,6 +20,9 @@ RUN npm install && \
 
 COPY . .
 
+RUN npm run info && \
+    echo Installed
+
 ENV NODE_ENV=production
 
 ARG ORACLEDB_USER

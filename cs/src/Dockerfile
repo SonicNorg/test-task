@@ -5,6 +5,7 @@ RUN yum update -y && \
     yum install -y oracle-nodejs-release-el7 && \
     yum install -y nodejs && \
     yum install -y oracle-instantclient19.3-basic.x86_64 && \
+    yum install -y java-1.8.0-openjdk && \
     yum clean all && \
     node --version && \
     npm --version && \
@@ -15,9 +16,12 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 RUN npm install && \
-  echo Installed
+    echo Installed
 
 COPY . .
+
+RUN npm run info && \
+    echo Installed
 
 ENV NODE_ENV=production
 
