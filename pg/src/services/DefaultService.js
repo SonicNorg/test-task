@@ -24,7 +24,7 @@ class DefaultService {
                     }));
                 } catch (e) {
                     reject(Service.rejectResponse(
-                        e.message || 'Invalid input',
+                        e,
                         e.status || 405,
                     ));
                 }
@@ -39,11 +39,19 @@ class DefaultService {
             customer = await DefaultService.checkStatus(paymentRequest.msisdn);
             logger.debug("Customer status:", customer);
         } catch (e) {
-            logger.error(message);
+            logger.error(message, e);
             if (e.statusCode == 400) {
-                throw {status: 400, message: message};
+                throw {
+                    status: 400, message: message
+                };
             } else {
-                throw {status: 500, message: e.error ? e.error : "Unknown error in CS call"};
+                throw {
+                    status: 500,
+                    error: {
+                        code: 1,
+                        message: "Unknown error in CS call"
+                    }
+                };
             }
         }
         logger.debug(`By msisdn ${paymentRequest.msisdn} found customer: ${JSON.stringify(customer)}`)
