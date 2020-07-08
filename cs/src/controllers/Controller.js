@@ -55,33 +55,6 @@ class Controller {
     return uploadedFileName;
   }
 
-  // static collectFiles(request) {
-  //   logger.info('Checking if files are expected in schema');
-  //   const requestFiles = {};
-  //   if (request.openapi.schema.requestBody !== undefined) {
-  //     const [contentType] = request.headers['content-type'].split(';');
-  //     if (contentType === 'multipart/form-data') {
-  //       const contentSchema = request.openapi.schema.requestBody.content[contentType].schema;
-  //       Object.entries(contentSchema.properties).forEach(([name, property]) => {
-  //         if (property.type === 'string' && ['binary', 'base64'].indexOf(property.format) > -1) {
-  //           const fileObject = request.files.find(file => file.fieldname === name);
-  //           const fileArray = fileObject.originalname.split('.');
-  //           const extension = fileArray.pop();
-  //           fileArray.push(`_${Date.now()}`);
-  //           const uploadedFileName = `${fileArray.join('')}.${extension}`;
-  //           fs.renameSync(path.join(config.FILE_UPLOAD_PATH, fileObject.filename),
-  //             path.join(config.FILE_UPLOAD_PATH, uploadedFileName));
-  //           requestFiles[name] = uploadedFileName;
-  //         }
-  //       });
-  //     } else if (request.openapi.schema.requestBody.content[contentType] !== undefined
-  //         && request.files !== undefined) {
-  //       [request.body] = request.files;
-  //     }
-  //   }
-  //   return requestFiles;
-  // }
-
   static collectRequestParams(request) {
     const requestParams = {};
     if (request.openapi.schema.requestBody !== undefined) {
@@ -106,14 +79,7 @@ class Controller {
         );
       }
     }
-    // if (request.openapi.schema.requestBody.content['application/json'] !== undefined) {
-    //   const schema = request.openapi.schema.requestBody.content['application/json'];
-    //   if (schema.$ref) {
-    //     requestParams[schema.$ref.substr(schema.$ref.lastIndexOf('.'))] = request.body;
-    //   } else {
-    //     requestParams.body = request.body;
-    //   }
-    // }
+
     request.openapi.schema.parameters.forEach((param) => {
       if (param.in === 'path') {
         requestParams[param.name] = request.openapi.pathParams[param.name];
