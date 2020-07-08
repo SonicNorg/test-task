@@ -35,7 +35,7 @@ docker build --build-arg ORACLEDB_USER=<имя_пользователя_бд> --
         -e LOGGER_LEVEL=<уровень_логирования> \
         -p 3000:3000 \
         <имя_образа>
-
+        
         Parameters:
             --name                          The name of the container (default: auto generated)
             -p:                             The port mapping of the host portto the container port
@@ -48,12 +48,12 @@ docker build --build-arg ORACLEDB_USER=<имя_пользователя_бд> --
             -e ORACLEDB_POOL_MAX            (default: 10)
             -e ORACLEDB_POOL_INCREMENT      (default: 0)
             -v /usr/src/app/logs            Путь к файлам логов
-
+                    
          P.S. RACLEDB_POOL_MIN и RACLEDB_POOL_MAX одинакове, и ORACLEDB_POOL_INCREMENT установлен в 0. 
          Это создаст пул фиксированного размера, который требует меньше ресурсов для управления — для пулов, которые получают согласованное использование
 
 **FOR EXAMPLE:**
-
+    
     docker run -d \
         --name cs-container -it \
         -e ORACLEDB_USER=USER_DB \
@@ -61,4 +61,4 @@ docker build --build-arg ORACLEDB_USER=<имя_пользователя_бд> --
         -e ORACLEDB_CONNECTIONSTRING=loclhost.ru:1521/osadb.oracle.com \
         -p 3001:3000 \
         cs-images:latest
-
+    

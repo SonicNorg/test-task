@@ -233,82 +233,82 @@ const config = require('../config');
 const logger = require('../logger');
 &nbsp;
 class Controller {
-  static sendResponse(response, payload) {
-    /**
-     * The default response-code is 200. We want to allow to change that. in That case,
-     * payload will be an object consisting of a code and a payload. If not customized
-     * send 200 and the payload as received in this method.
-     */
-    response.status(payload.code || <span class="branch-1 cbranch-no" title="branch not covered" >200)</span>;
-    const responsePayload = payload.payload !== undefined ? payload.payload : <span class="branch-1 cbranch-no" title="branch not covered" >payload;</span>
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (responsePayload instanceof Object) {
-      response.json(responsePayload);
-    } else {
-<span class="cstat-no" title="statement not covered" >      response.end(responsePayload);</span>
-    }
-  }
-&nbsp;
-  static sendError(response, error) {
-    response.status(error.code || <span class="branch-1 cbranch-no" title="branch not covered" >500)</span>;
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (error.error instanceof Object) {
-<span class="cstat-no" title="statement not covered" >      response.json(error.error);</span>
-    } else {
-      response.end(error.error || <span class="branch-1 cbranch-no" title="branch not covered" >error.message)</span>;
-    }
-  }
-&nbsp;
-  static collectRequestParams(request) {
-    const requestParams = {};
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (request.openapi.schema.requestBody !== undefined) {
-      const { content } = <span class="cstat-no" title="statement not covered" >request.openapi.schema.requestBody;</span>
-<span class="cstat-no" title="statement not covered" >      if (content['application/json'] !== undefined) {</span>
-        const schema = <span class="cstat-no" title="statement not covered" >request.openapi.schema.requestBody.content['application/json'];</span>
-<span class="cstat-no" title="statement not covered" >        if (schema.$ref) {</span>
-<span class="cstat-no" title="statement not covered" >          requestParams[schema.$ref.substr(schema.$ref.lastIndexOf('.'))] = request.body;</span>
+    static sendResponse(response, payload) {
+        /**
+         * The default response-code is 200. We want to allow to change that. in That case,
+         * payload will be an object consisting of a code and a payload. If not customized
+         * send 200 and the payload as received in this method.
+         */
+        response.status(payload.code || <span class="branch-1 cbranch-no" title="branch not covered" >200)</span>;
+        const responsePayload = payload.payload !== undefined ? payload.payload : <span class="branch-1 cbranch-no" title="branch not covered" >payload;</span>
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (responsePayload instanceof Object) {
+            response.json(responsePayload);
         } else {
-<span class="cstat-no" title="statement not covered" >          requestParams.body = request.body;</span>
+<span class="cstat-no" title="statement not covered" >            response.end(responsePayload);</span>
         }
-      } else <span class="cstat-no" title="statement not covered" >if (content['multipart/form-data'] !== undefined) {</span>
-<span class="cstat-no" title="statement not covered" >        Object.keys(content['multipart/form-data'].schema.properties).forEach(</span>
-<span class="fstat-no" title="function not covered" >          (p</span>roperty) =&gt; {
-            const propertyObject = <span class="cstat-no" title="statement not covered" >content['multipart/form-data'].schema.properties[property];</span>
-<span class="cstat-no" title="statement not covered" >            if (propertyObject.format !== undefined &amp;&amp; propertyObject.format === 'binary') {</span>
-<span class="cstat-no" title="statement not covered" >              requestParams[property] = this.collectFile(request, property);</span>
-            } else {
-<span class="cstat-no" title="statement not covered" >              requestParams[property] = request.body[property];</span>
-            }
-          },
-        );
-      }
     }
-    // if (request.openapi.schema.requestBody.content['application/json'] !== undefined) {
-    //   const schema = request.openapi.schema.requestBody.content['application/json'];
-    //   if (schema.$ref) {
-    //     requestParams[schema.$ref.substr(schema.$ref.lastIndexOf('.'))] = request.body;
-    //   } else {
-    //     requestParams.body = request.body;
-    //   }
-    // }
-    request.openapi.schema.parameters.forEach((param) =&gt; {
-      <span class="missing-if-branch" title="if path not taken" >I</span>if (param.in === 'path') {
-<span class="cstat-no" title="statement not covered" >        requestParams[param.name] = request.openapi.pathParams[param.name];</span>
-      } else <span class="missing-if-branch" title="else path not taken" >E</span>if (param.in === 'query') {
-        requestParams[param.name] = request.query[param.name];
-      } else <span class="cstat-no" title="statement not covered" >if (param.in === 'header') {</span>
-<span class="cstat-no" title="statement not covered" >        requestParams[param.name] = request.headers[param.name];</span>
-      }
-    });
-    return requestParams;
-  }
 &nbsp;
-  static async handleRequest(request, response, serviceOperation) {
-    try {
-      const serviceResponse = await serviceOperation(this.collectRequestParams(request));
-      Controller.sendResponse(response, serviceResponse);
-    } catch (error) {
-      Controller.sendError(response, error);
+    static sendError(response, error) {
+        response.status(error.code || <span class="branch-1 cbranch-no" title="branch not covered" >500)</span>;
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (error.error instanceof Object) {
+<span class="cstat-no" title="statement not covered" >            response.json(error.error);</span>
+        } else {
+            response.end(error.error || <span class="branch-1 cbranch-no" title="branch not covered" >error.message)</span>;
+        }
     }
-  }
+&nbsp;
+    static collectRequestParams(request) {
+        const requestParams = {};
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (request.openapi.schema.requestBody !== undefined) {
+            const {content} = <span class="cstat-no" title="statement not covered" >request.openapi.schema.requestBody;</span>
+<span class="cstat-no" title="statement not covered" >            if (content['application/json'] !== undefined) {</span>
+                const schema = <span class="cstat-no" title="statement not covered" >request.openapi.schema.requestBody.content['application/json'];</span>
+<span class="cstat-no" title="statement not covered" >                if (schema.$ref) {</span>
+<span class="cstat-no" title="statement not covered" >                    requestParams[schema.$ref.substr(schema.$ref.lastIndexOf('.'))] = request.body;</span>
+                } else {
+<span class="cstat-no" title="statement not covered" >                    requestParams.body = request.body;</span>
+                }
+            } else <span class="cstat-no" title="statement not covered" >if (content['multipart/form-data'] !== undefined) {</span>
+<span class="cstat-no" title="statement not covered" >                Object.keys(content['multipart/form-data'].schema.properties).forEach(</span>
+<span class="fstat-no" title="function not covered" >                    (p</span>roperty) =&gt; {
+                        const propertyObject = <span class="cstat-no" title="statement not covered" >content['multipart/form-data'].schema.properties[property];</span>
+<span class="cstat-no" title="statement not covered" >                        if (propertyObject.format !== undefined &amp;&amp; propertyObject.format === 'binary') {</span>
+<span class="cstat-no" title="statement not covered" >                            requestParams[property] = this.collectFile(request, property);</span>
+                        } else {
+<span class="cstat-no" title="statement not covered" >                            requestParams[property] = request.body[property];</span>
+                        }
+                    },
+                );
+            }
+        }
+        // if (request.openapi.schema.requestBody.content['application/json'] !== undefined) {
+        //   const schema = request.openapi.schema.requestBody.content['application/json'];
+        //   if (schema.$ref) {
+        //     requestParams[schema.$ref.substr(schema.$ref.lastIndexOf('.'))] = request.body;
+        //   } else {
+        //     requestParams.body = request.body;
+        //   }
+        // }
+        request.openapi.schema.parameters.forEach((param) =&gt; {
+            <span class="missing-if-branch" title="if path not taken" >I</span>if (param.in === 'path') {
+<span class="cstat-no" title="statement not covered" >                requestParams[param.name] = request.openapi.pathParams[param.name];</span>
+            } else <span class="missing-if-branch" title="else path not taken" >E</span>if (param.in === 'query') {
+                requestParams[param.name] = request.query[param.name];
+            } else <span class="cstat-no" title="statement not covered" >if (param.in === 'header') {</span>
+<span class="cstat-no" title="statement not covered" >                requestParams[param.name] = request.headers[param.name];</span>
+            }
+        });
+        return requestParams;
+    }
+&nbsp;
+    static async handleRequest(request, response, serviceOperation) {
+        try {
+            const serviceResponse = await serviceOperation(this.collectRequestParams(request));
+            Controller.sendResponse(response, serviceResponse);
+        } catch (error) {
+            Controller.sendError(response, error);
+        }
+    }
 }
 &nbsp;
 module.exports = Controller;
@@ -319,7 +319,7 @@ module.exports = Controller;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Jul 08 2020 14:14:20 GMT+0300 (GMT+03:00)
+                at Wed Jul 08 2020 14:33:09 GMT+0300 (GMT+03:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

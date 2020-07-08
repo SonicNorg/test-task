@@ -9,10 +9,10 @@
 const Controller = require('./Controller');
 const service = require('../services/DefaultService');
 const checkGET = async (request, response) => {
-  await Controller.handleRequest(request, response, service.checkGET);
+    await Controller.handleRequest(request, response, service.checkGET);
 };
 
 
 module.exports = {
-  checkGET,
+    checkGET,
 };

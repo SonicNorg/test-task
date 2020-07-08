@@ -1,5 +1,7 @@
 .idea
 **/node_modules
+**/.nyc_output
+**/logs
 *.log
 */*.log
 */.nyc_output
