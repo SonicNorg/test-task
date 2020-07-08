@@ -7,4 +7,7 @@ module.exports.dbConfig = {
     poolIncrement: 0
 };
 
+/*
+error: 0,   warn: 1,  info: 2,  http: 3,   verbose: 4,   debug: 5,  silly: 6
+*/
 module.exports.loggerLevel = process.env.LOGGER_LEVEL || 'debug';

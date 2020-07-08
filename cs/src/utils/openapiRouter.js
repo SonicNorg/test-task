@@ -3,14 +3,14 @@ const controllers = require('../controllers');
 const Services = require('../services');
 
 function handleError(err, request, response, next) {
-  logger.error(err);
-  const code = err.code || 400;
-  response.status(code);
-  response.error = err;
-  next(JSON.stringify({
-    code,
-    error: err,
-  }));
+    logger.error(err);
+    const code = err.code || 400;
+    response.status(code);
+    response.error = err;
+    next(JSON.stringify({
+        code,
+        error: err,
+    }));
 }
 
 /**
@@ -28,40 +28,36 @@ function handleError(err, request, response, next) {
  * @returns {Function}
  */
 function openApiRouter() {
-  return async (request, response, next) => {
-    try {
-      /**
-       * This middleware runs after a previous process have applied an openapi object
-       * to the request.
-       * If none was applied This is because the path requested is not in the schema.
-       * If there's no openapi object, we have nothing to do, and pass on to next middleware.
-       */
-      if (request.openapi === undefined
-          || request.openapi.schema === undefined
-      ) {
-        next();
-        return;
-      }
-      // request.swagger.paramValues = {};
-      // request.swagger.params.forEach((param) => {
-      //   request.swagger.paramValues[param.name] = getValueFromRequest(request, param);
-      // });
-      const controllerName = request.openapi.schema['x-openapi-router-controller'];
-      const serviceName = request.openapi.schema['x-openapi-router-service'];
-      if (!controllers[controllerName] || controllers[controllerName] === undefined) {
-        handleError(`request sent to controller '${controllerName}' which has not been defined`,
-          request, response, next);
-      } else {
-        const apiController = new controllers[controllerName](Services[serviceName]);
-        const controllerOperation = request.openapi.schema.operationId;
-        await apiController[controllerOperation](request, response, next);
-      }
-    } catch (error) {
-      logger.error(error);
-      const err = { code: 500, error: error.message };
-      handleError(err, request, response, next);
-    }
-  };
+    return async (request, response, next) => {
+        try {
+            /**
+             * This middleware runs after a previous process have applied an openapi object
+             * to the request.
+             * If none was applied This is because the path requested is not in the schema.
+             * If there's no openapi object, we have nothing to do, and pass on to next middleware.
+             */
+            if (request.openapi === undefined
+                || request.openapi.schema === undefined
+            ) {
+                next();
+                return;
+            }
+            const controllerName = request.openapi.schema['x-openapi-router-controller'];
+            const serviceName = request.openapi.schema['x-openapi-router-service'];
+            if (!controllers[controllerName] || controllers[controllerName] === undefined) {
+                handleError(`request sent to controller '${controllerName}' which has not been defined`,
+                    request, response, next);
+            } else {
+                const apiController = new controllers[controllerName](Services[serviceName]);
+                const controllerOperation = request.openapi.schema.operationId;
+                await apiController[controllerOperation](request, response, next);
+            }
+        } catch (error) {
+            logger.error(error);
+            const err = {code: 500, error: error.message};
+            handleError(err, request, response, next);
+        }
+    };
 }
 
 module.exports = openApiRouter;

@@ -4,6 +4,7 @@ const path = require('path');
 const swaggerUI = require('swagger-ui-express');
 const jsYaml = require('js-yaml');
 const express = require('express');
+const morgan = require('morgan');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -30,18 +31,10 @@ class ExpressServer {
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended: false}));
         this.app.use(cookieParser());
+        this.app.use(morgan('combined', {stream: logger.stream}));
 
         this.app.get('/openapi', (req, res) => res.sendFile((path.join(__dirname, 'api', 'openapi.yaml'))));
-
         this.app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(this.schema));
-        this.app.get('/login-redirect', (req, res) => {
-            res.status(200);
-            res.json(req.query);
-        });
-        this.app.get('/oauth2-redirect.html', (req, res) => {
-            res.status(200);
-            res.json(req.query);
-        });
     }
 
     launch() {
@@ -65,7 +58,6 @@ class ExpressServer {
                 logger.info(`Listening on port ${this.port}`);
             });
     }
-
 
     async close() {
         if (this.server !== undefined) {

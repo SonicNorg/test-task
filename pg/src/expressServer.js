@@ -4,9 +4,7 @@ const path = require('path');
 const swaggerUI = require('swagger-ui-express');
 const jsYaml = require('js-yaml');
 const express = require('express');
-
 const morgan = require('morgan');
-
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');

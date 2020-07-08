@@ -9,8 +9,7 @@
     "dev": "nodemon index"
   },
   "keywords": [
-    "openapi-generator",
-    "openapi"
+    "checkstatus"
   ],
   "license": "Unlicense",
   "private": true,
