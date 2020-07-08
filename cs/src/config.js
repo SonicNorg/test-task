@@ -3,7 +3,7 @@ const envConfig = require('./config/index');
 
 const config = {
     ROOT_DIR: __dirname,
-    URL_PORT: 3001,
+    URL_PORT: 3000,
     URL_PATH: 'http://localhost',
     CONTROLLER_DIRECTORY: path.join(__dirname, 'controllers'),
     PROJECT_DIR: __dirname,
