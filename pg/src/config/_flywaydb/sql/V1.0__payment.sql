@@ -21,12 +21,11 @@ BEGIN
         oldBalance := 0;
         SELECT BALANCE INTO oldBalance FROM BALANCE;
         UPDATE BALANCE set
-                            BALANCE = oldBalance + :new.TRANSACTION_AMOUNT,
-                            BALANCE_CHANGE_DATE = CURRENT_TIMESTAMP
-            WHERE PERSONAL_ACCOUNT_ID = :new.PERSONAL_ACCOUNT_ID;
+                           BALANCE = oldBalance + :new.TRANSACTION_AMOUNT,
+                           BALANCE_CHANGE_DATE = CURRENT_TIMESTAMP
+        WHERE PERSONAL_ACCOUNT_ID = :new.PERSONAL_ACCOUNT_ID;
     END IF;
 END;
-
 CREATE OR REPLACE TRIGGER RESTRICT_PAYMENT_UPD_DEL
     BEFORE DELETE OR UPDATE ON PAYMENT
 DECLARE

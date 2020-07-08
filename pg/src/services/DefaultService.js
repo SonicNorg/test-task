@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 const Service = require('./Service');
 const Repository = require('../repository');
-const csConfig = require('../config').csConfig;
+const config = require('../config');
 const request = require('request-promise');
 const logger = require('../logger');
 
@@ -55,24 +55,44 @@ class DefaultService {
             }
         }
         logger.debug(`By msisdn ${paymentRequest.msisdn} found customer: ${JSON.stringify(customer)}`)
-        //TODO if (!customer.active) && В КОНФИГЕ РАЗРЕШЕНО ДЛЯ НЕАКТИВНЫХ ИЛИ активный и РАЗРЕШЕНО ДЛЯ АКТИВНЫХ тогда
-        const payment = {
-            payment_date: paymentRequest.date,
-            transaction_amount: parseFloat(paymentRequest.sum) * 100,
-            external_operation_id: paymentRequest.operation,
-            personal_account_id: customer.account,
-            success: 1
-        };
-        const paymentId = await Repository.createPayment(payment);
-        const balance = await Repository.getBalance(customer.account);
-        return {operation: paymentId, balance: balance / 100}
+        if ((customer.status && config.appConfig.ACTIVE_CUSTOMER_PAYMENT_ALLOWED)
+            || (!customer.status && config.appConfig.INACTIVE_CUSTOMER_PAYMENT_ALLOWED)) {
+            const payment = {
+                payment_date: paymentRequest.date,
+                transaction_amount: parseFloat(paymentRequest.sum) * 100,
+                external_operation_id: paymentRequest.operation,
+                personal_account_id: customer.account,
+                success: 1
+            };
+            try {
+                const paymentId = await Repository.createPayment(payment);
+                const balance = await Repository.getBalance(customer.account);
+                return {operation: paymentId, balance: balance / 100}
+            } catch (e) {
+                throw {
+                    status: 500,
+                    error: {
+                        code: 10,
+                        message: `Unknown error: ${e.message}`
+                    }
+                };
+            }
+        } else {
+            throw {
+                status: 500,
+                error: {
+                    code: 2,
+                    message: `Customer is ${customer.status ? "ACTIVE" : "INACTIVE"}, payment NOT allowed`
+                }
+            };
+        }
     }
 
     static async checkStatus(msisdn) {
         logger.info(`Checking Status for msisdn = ${msisdn}`);
         const options = {
             method: 'GET',
-            uri: `${csConfig.CS_URL_PATH}:${csConfig.CS_URL_PORT}/check`,
+            uri: `${config.csConfig.CS_URL_PATH}:${config.csConfig.CS_URL_PORT}/check`,
             headers: {
                 'User-Agent': 'Request-Promise',
             },
