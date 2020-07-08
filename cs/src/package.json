@@ -7,7 +7,10 @@
     "prestart": "npm install",
     "start": "node index.js",
     "dev": "nodemon index",
-    "test": "nyc --reporter=text --reporter=html mocha --timeout 25000 --unhandled-rejections=strict --exit"
+    "test": "nyc --reporter=text --reporter=html mocha --timeout 25000 --unhandled-rejections=strict --exit",
+    "info": "flyway -c config/_flywaydb/flyway.js info",
+    "migrate": "flyway -c config/_flywaydb/flyway.js migrate",
+    "clean": "flyway -c config/_flywaydb/flyway.js clean"
   },
   "keywords": [
     "checkstatus"
@@ -27,6 +30,7 @@
     "oracledb": "^5.0.0",
     "helmet": "^3.23.3",
     "morgan": "^1.10.0",
+    "node-flywaydb": "^3.0.2",
     "swagger-ui-express": "^4.0.2",
     "winston": "^3.2.1"
   },
